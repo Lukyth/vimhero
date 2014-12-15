@@ -12,7 +12,9 @@ class Arrow(object):
         self.change_image()
 
     def render(self, surface):
-        pos = (int(self.x), int(self.y))
+        x = int(self.x) - (int(self.get_width()) / 2)
+        y = int(self.y) - (int(self.get_height()) / 2)
+        pos = (x, y)
         surface.blit(self.image, pos)
 
     def random_direction(self):
@@ -20,6 +22,12 @@ class Arrow(object):
 
     def get_image(self, direction):
         return pygame.image.load("img/" + direction + ".png")
+
+    def get_width(self):
+        return self.image.get_width()
+
+    def get_height(self):
+        return self.image.get_height()
 
     def get_direction(self):
         return self.direction
