@@ -8,8 +8,8 @@ class Arrow(object):
 
     def __init__(self, pos):
         (self.x, self.y) = pos
-        self.direction = self.random_direction()
-        self.image = self.get_image(self.direction)
+        self.change_direction()
+        self.change_image()
 
     def render(self, surface):
         pos = (int(self.x), int(self.y))
@@ -23,3 +23,13 @@ class Arrow(object):
 
     def get_direction(self):
         return self.direction
+
+    def change(self):
+        self.change_direction()
+        self.change_image()
+
+    def change_direction(self):
+        self.direction = self.random_direction()
+
+    def change_image(self):
+        self.image = self.get_image(self.direction)
