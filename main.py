@@ -21,15 +21,23 @@ class MainGame(gamelib.SimpleGame):
         if self.is_key_pressed(K_h):
             if self.arrow.get_direction() is 'left':
                 self.arrow.change()
+                self.score += 1
+                self.render_score()
         elif self.is_key_pressed(K_j):
             if self.arrow.get_direction() is 'up':
                 self.arrow.change()
+                self.score += 1
+                self.render_score()
         elif self.is_key_pressed(K_k):
             if self.arrow.get_direction() is 'down':
                 self.arrow.change()
+                self.score += 1
+                self.render_score()
         elif self.is_key_pressed(K_l):
             if self.arrow.get_direction() is 'right':
                 self.arrow.change()
+                self.score += 1
+                self.render_score()
         
     def render_score(self):
         self.score_image = self.font.render("Score = %d" % self.score, 0, MainGame.WHITE)
