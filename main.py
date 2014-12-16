@@ -21,11 +21,12 @@ class MainGame(gamelib.SimpleGame):
         self.score = 0
         self.arrow.change()
         self.time_limit = 2 * MainGame.SECOND
+        self.time_decrease = 50
         self.is_started = False
         self.is_game_over = False
 
     def update(self):
-        if self.is_started:
+        if self.is_started and not self.is_game_over:
             if self.is_over_time():
                 self.game_over()
         self.check_key()
@@ -59,11 +60,10 @@ class MainGame(gamelib.SimpleGame):
             self.check_direction('down')
         elif event.key == pygame.K_l:
             self.check_direction('right')
-        else:
-            return False
-        self.is_started = True
 
     def check_direction(self, direction):
+        if not self.is_started:
+            self.is_started = True
         if self.arrow.get_direction() is direction:
                 self.correct_key()
         else:
@@ -74,6 +74,7 @@ class MainGame(gamelib.SimpleGame):
             self.reset_game()
 
     def correct_key(self):
+        self.time_limit -= self.time_decrease
         self.set_time()
         self.arrow.change()
         self.score += 1
@@ -90,11 +91,20 @@ class MainGame(gamelib.SimpleGame):
 
     def render_score(self):
         self.score_image = self.font.render("Score = %d" % self.score, 0, MainGame.WHITE)
+        self.set_score_position()
+
+    def set_score_position(self):
+        self.score_pos_x = (self.window_size[0] / 2) - (self.score_image.get_width() / 2)
+        if not self.is_game_over:
+            self.score_pos_y = (self.window_size[1] / 10) - (self.score_image.get_height() / 2)
+        else:
+            self.score_pos_y = (self.window_size[1] / 2) - (self.score_image.get_height() / 2)
 
     def render(self, surface):
-        self.arrow.render(surface)
         self.render_score()
-        surface.blit(self.score_image, (10,10))
+        surface.blit(self.score_image, (self.score_pos_x, self.score_pos_y))
+        if not self.is_game_over:
+            self.arrow.render(surface)
 
 def main():
     game = MainGame()
