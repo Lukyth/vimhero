@@ -7,6 +7,7 @@ from elements import Arrow
 class MainGame(gamelib.SimpleGame):
     BLACK = pygame.Color('black')
     WHITE = pygame.Color('white')
+    SECOND = 1000
     
     def __init__(self):
         super(MainGame, self).__init__('VimHero', MainGame.BLACK)
@@ -19,10 +20,23 @@ class MainGame(gamelib.SimpleGame):
     def init_game(self):
         self.score = 0
         self.arrow.change()
+        self.time_limit = 2 * MainGame.SECOND
+        self.is_started = False
         self.is_game_over = False
 
     def update(self):
+        if self.is_started:
+            if self.is_over_time():
+                self.game_over()
         self.check_key()
+
+    def is_over_time(self):
+        if self.get_time() - self.time > self.time_limit:
+            return True
+        return False
+
+    def get_time(self):
+        return pygame.time.get_ticks()
 
     def check_key(self):
         for event in pygame.event.get(KEYUP):
@@ -45,6 +59,9 @@ class MainGame(gamelib.SimpleGame):
             self.check_direction('down')
         elif event.key == pygame.K_l:
             self.check_direction('right')
+        else:
+            return False
+        self.is_started = True
 
     def check_direction(self, direction):
         if self.arrow.get_direction() is direction:
@@ -57,13 +74,18 @@ class MainGame(gamelib.SimpleGame):
             self.reset_game()
 
     def correct_key(self):
+        self.set_time()
         self.arrow.change()
         self.score += 1
+
+    def set_time(self):
+        self.time = pygame.time.get_ticks()
 
     def game_over(self):
         self.is_game_over = True
         
     def reset_game(self):
+        self.is_started = False
         self.init_game()
 
     def render_score(self):

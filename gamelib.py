@@ -3,11 +3,15 @@ from pygame.locals import *
 
 class SimpleGame(object):
 
+    FPS = 60
+    GAME_WIDTH = 640
+    GAME_HEIGHT = 480
+
     def __init__(self,
                  title,
                  background_color,
-                 window_size=(640,480),
-                 fps=60):
+                 window_size = (GAME_WIDTH,GAME_HEIGHT),
+                 fps = FPS):
         self.title = title
         self.window_size = window_size
         self.fps = fps
