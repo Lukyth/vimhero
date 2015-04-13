@@ -2,6 +2,23 @@ import pygame
 from pygame.locals import *
 from random import randint
 
+class Text(object):
+    def __init__(self, text, pos, color, font):
+        (self.x, self.y) = pos
+        self.color = color
+        self.font = font
+        self.set_text(text)
+        
+    def render(self, surface):
+        x = int(self.x) - (int(self.get_width()) / 2)
+        y = int(self.y) - (int(self.get_height()) / 2)
+        pos = (x, y)
+        surface.blit(self.text, pos)
+    
+    def set_text(self, text):
+        pygame.font.SysFont("monospace", 20)
+        self.text = self.font.render(text, 0, self.color)
+
 class Arrow(object):
 
     DIRECTION = ['up', 'down', 'left', 'right']
